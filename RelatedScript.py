@@ -10,7 +10,11 @@ from json.decoder import JSONDecodeError
 # usersFollowedArtistResult = spotifyObject.current_user_followed_artists(limit=2, after=None)
 # usersFollowedArtistResult = usersFollowedArtistResult['artists']
 
-# Compare the 50 artist to related artists
+# Compare the 50 artist to related artists these are the keys for after
+# The program is running EXTREMELY SLOW due to the amount of iterations and for loops
+# 3EnbnmqrrvApHJs6FMvYik
+# 67nwj3Y5sZQLl72VNUHEYE
+
 def compare_artist(relatedArtist):
 
     spotifyObject = spotipy.Spotify(auth=token)
@@ -18,7 +22,39 @@ def compare_artist(relatedArtist):
     usersFollowedArtist = usersFollowedArtist['artists']
 
     for artist in usersFollowedArtist['items']:
+                   
+        if artist['name'] == relatedArtist:
+            return False
 
+        else:
+            continue
+
+    return True
+
+def compare_artist_two(relatedArtist):
+
+    spotifyObject = spotipy.Spotify(auth=token)
+    usersFollowedArtist = spotifyObject.current_user_followed_artists(limit=50,after='3EnbnmqrrvApHJs6FMvYik')
+    usersFollowedArtist = usersFollowedArtist['artists']
+
+    for artist in usersFollowedArtist['items']:
+                   
+        if artist['name'] == relatedArtist:
+            return False
+
+        else:
+            continue
+
+    return True
+
+def compare_artist_three(relatedArtist):
+
+    spotifyObject = spotipy.Spotify(auth=token)
+    usersFollowedArtist = spotifyObject.current_user_followed_artists(limit=50,after='67nwj3Y5sZQLl72VNUHEYE')
+    usersFollowedArtist = usersFollowedArtist['artists']
+
+    for artist in usersFollowedArtist['items']:
+                   
         if artist['name'] == relatedArtist:
             return False
 
@@ -44,9 +80,6 @@ except:
 # Create our spotify object
 spotifyObject = spotipy.Spotify(auth=token)
 user = spotifyObject.current_user()
-
-displayName = user['display_name']
-userFollowers = user['followers']['total']
 
 while True:
 
@@ -77,8 +110,8 @@ while True:
 
         for relatedArtist in relatedArtistResult:
 
-                if compare_artist(relatedArtist['name']) == False:
-                    print("Already followed: " + relatedArtist['name'])
+                if compare_artist(relatedArtist['name']) == False or compare_artist_two(relatedArtist['name']) == False or compare_artist_three(relatedArtist['name']) == False:
+                    # print("Already followed: " + relatedArtist['name'])
                     continue
 
                 else:
